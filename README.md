@@ -33,6 +33,7 @@ You are able to enter the container by adding any argument after `xfitter:wip`. 
 # Included Software Versions
 |Software|Version|
 |--------|-------|
+|root|6.12/07|
 |lhapdf|6.2.3|
 |hathor|2.0|
 |hoppet|1.2.0|
