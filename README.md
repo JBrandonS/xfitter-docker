@@ -1,48 +1,62 @@
 
 # xFitter-Docker
-xFitter-Docker is a docker container featuring the latest version of xfitter, from the master branch, and many standard HEP software packages for rendering.
-It allows for easy use of xfitter no matter the system or configuration.
-
+xFitter-Docker is a docker container featuring the latest version of [xfitter](https://www.xfitter.org/xFitter/), from the master branch for the [main repo](https://gitlab.cern.ch/fitters/xfitter), and as well as many standard HEP software packages needed for processing.
+This allows for easy use of an up-to-date xfitter across all systems and configurations.
 
 # Installation
-Under most situations you do you need to build this project, instead use docker hub to pull the image
+Prebuilt images for this project are available in docker-hub under [jbrandons/xfitter](https://hub.docker.com/r/jbrandons/xfitter). You can pull this project from any internet connected PC with
 ```
-    docker pull jbrandons/xfitter:wip
+    docker pull jbrandons/xfitter
 ```
 
 # Usage
-The simplest method to run this would be to have your xfitter files, including any data files needed in the same folder. Then run
+To utilize this container you will need to start by placing the xfitter data files (steering.txt, ewparam.txt, etc) and any target data files needed into a folder. This will become your base path and the target data must be in this folder or a subfolder or it.
+
+From within this folder you can run the follow:
 ```
-    docker run --rm -it -v /host/path/to/data:/data jbrandons/xfitter:wip
+    docker run --rm -it -v $(pwd):/data jbrandons/xfitter
 ```
-this will be the same as running `xfitter` and `xfitter-draw output/` from the `/host/path/to/data` folder. When done you will have the pdf files in the `/host/path/to/data/output` file on the host.
+This will result in the same output as running  `xfitter` and `xfitter-draw output/` from this folder, and all outputs will correctly be placed in the `output/` folder on the host machine.
 
 ## PDF files
-If you need to include custom / unreleased PDF files for lhapdf that can be done by either placing the tarballs into a folder or linking the host's lhpdf data dir to the containers `/pdffiles` folder. To link the folders add `-v /host/path/to/pdf/data:/pdffiles` to the command
+lhapdf will pull any needed pdf datasets automatically from its [repo](http://lhapdfsets.web.cern.ch/lhapdfsets/current/).
+You can speed up the run time of the container by providing pre-downloaded tarballs or by linking to an existing lhapdf data directory on the host machine.
+Binding the host's lhapdf data directory can be done by adding `-v $(lhapdf-config --datadir):/pdffiles` before the image name in the run
+PDF tarballs must end in either `.tar.gz` or `.tgz` and can be added by placing them all inside a directory and binding with `-v /host/pdffiles:/pdffiles`
+
 ```
-    docker run --rm -it -v /host/path/to/data:/data -v /host/pdf/files:/pdffiles jbrandons/xfitter:wip
+    docker run --rm -it -v /host/path/to/data:/data -v /host/pdffiles:/pdffiles jbrandons/xfitter
 ```
-Note: tarballs must end in either `.tar.gz` or `.tgz`
 
 ## Entering the container
-You are able to enter the container by adding any argument after `xfitter:wip`. To get into bash use
+You may enter the container by appending an available shell after the container name, to launch bash run
 ```
-    docker run --rm -it -v /host/path/to/data:/data jbrandons/xfitter:wip bash
+    docker run --rm -it -v /host/path/to/data:/data jbrandons/xfitter bash
+```
+Note: You must have `-it` in this command to be able to see and interact with the container
+
+# Singularity
+This project has been tested on a mainframe with [singularity](https://sylabs.io/docs/) installed.
+
+To run in a folder with the xfitter data and files, as in the first example in Usage, use the following command
+```
+    singularity run -B $(pwd):/data docker://jbrandons/xfitter
 ```
 
 # Included Software Versions
 |Software|Version|
 |--------|-------|
-|root|6.12/07|
-|lhapdf|6.2.3|
-|hathor|2.0|
-|hoppet|1.2.0|
-|applgrid|1.5.34|
-|qcdnum|17-01-14|
-|apfel|3.0.4|
-|mela|2.0.1|
-|apfelgrid|1.0.1|
-|apfelxx|4.0.0|
+|[ubuntu](https://ubuntu.com/)|16.04.6 LTS|
+|[root](https://root.cern.ch/)|6.12/07|
+|[lhapdf](https://lhapdf.hepforge.org/)|6.2.3|
+|[hathor](https://www-zeuthen.desy.de/~moch/hathor/)|2.0|
+|[hoppet](https://hoppet.hepforge.org)|1.2.0|
+|[applgrid](https://applgrid.hepforge.org/)|1.5.34|
+|[qcdnum](https://www.nikhef.nl/~h24/qcdnum/)|17-01-14|
+|[apfel](https://apfel.hepforge.org/)|3.0.4|
+|[mela](https://apfel.hepforge.org/mela.html)|2.0.1|
+|[apfelgrid](https://github.com/zenaiev/APFELgrid)|1.0.1|
+|[apfelxx](https://github.com/vbertone/apfelxx/)|4.0.0|
 
 # Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change

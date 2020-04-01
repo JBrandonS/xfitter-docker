@@ -1,10 +1,11 @@
 FROM rootproject/root-ubuntu16:latest
 LABEL maintainer="Brandon Stevenson <stevensonb@smu.edu>"
 LABEL version="0.1"
-LABEL description="An xFitter container that will autorun xfitter and xfitter-draw on the /data dir"
+LABEL description="An xFitter container that will autorun xfitter and xfitter-draw on the /data dir. Singularity compatible"
 
 USER root
-WORKDIR /root
+ENV XFITTER_INSTALL_DIR /opt/xfitter
+WORKDIR $XFITTER_INSTALL_DIR
 
 RUN apt-get update -qq \
     && apt-get upgrade -y -qq \
@@ -15,8 +16,9 @@ RUN apt-get update -qq \
 COPY install-xfitter-master install-xfitter
 RUN chmod +x install-xfitter \
     && ./install-xfitter master \
-    && rm -rf /root/xfitter-master/.git /root/xfitter-master/examples \
-    && rm -f /root/deps/*.tar.gz /root/deps/*.tgz 
+    && rm -rf ${XFITTER_INSTALL_DIR}/xfitter-master/.git ${XFITTER_INSTALL_DIR}/xfitter-master/examples \
+    && rm -f ${XFITTER_INSTALL_DIR}/deps/*.tar.gz ${XFITTER_INSTALL_DIR}/deps/*.tgz \
+    && chmod -R 755 ${XFITTER_INSTALL_DIR}
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh

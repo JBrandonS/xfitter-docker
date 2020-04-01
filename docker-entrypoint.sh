@@ -2,7 +2,7 @@
 set -e
 
 # Settup xfitter
-source /root/setup.sh
+source ${XFITTER_INSTALL_DIR}/setup.sh
 
 # Allow people to add lhapdf data files
 # This can be done in two formats, 
@@ -16,7 +16,7 @@ if [ "$(ls /pdffiles)" ]; then
         rm -rf $lhapdfdatadir
         ln -s /pdffiles $lhapdfdatadir
     elif [ -f /pdffiles/*.tar.gz ] || [ -f /pdffiles/*.tgz ]; then
-        echo "extracting pdf data files into $lhapdfdatadir"
+        echo "Extracting pdf data files into $lhapdfdatadir"
         for file in $(find /pdffiles -name '*.tar.gz' -o -name '*.tgz'); do basename $file && tar xzf $file -C $lhapdfdatadir; done
     else
         echo "Unknown data in /pdffiles, unable to do anything."
