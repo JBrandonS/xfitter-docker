@@ -1,7 +1,5 @@
 FROM rootproject/root-ubuntu16:latest
 LABEL maintainer="Brandon Stevenson <stevensonb@smu.edu>"
-LABEL version="0.1"
-LABEL description="An xFitter container that will autorun xfitter and xfitter-draw on the /data dir. Singularity compatible"
 
 USER root
 ENV XFITTER_INSTALL_DIR /opt/xfitter
