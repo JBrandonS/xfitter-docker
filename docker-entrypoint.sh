@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-# Settup xfitter
+# Setup xfitter
 source ${XFITTER_INSTALL_DIR}/setup.sh
 
+# Fix issue with singularity not honoring WORDDIR in docker
+cd /run
+
 # Allow people to add lhapdf data files
-# This can be done in two formats, 
-#    linking to a complete local lhapdf/share/lhapdf install, with config files and pdf's extracted
-#    linking to a folder of tarballs, these must be in either tar.gz or .tgz file types
-if [ "$(ls /pdffiles)" ]; then
+if [ -d /pdffiles ] && [ "$(ls /pdffiles)" ]; then
     lhapdfdatadir=$(lhapdf-config --datadir)
 
     if [ -f /pdffiles/lhapdf.conf ] && [ -f /pdffiles/pdfsets.index ]; then

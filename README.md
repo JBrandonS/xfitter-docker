@@ -10,22 +10,23 @@ Prebuilt images for this project are available in docker-hub under [jbrandons/xf
 ```
 
 # Usage
-To utilize this container you will need to start by placing the xfitter data files (steering.txt, ewparam.txt, etc) and any target data files needed into a folder. This will become your base path and the target data must be in this folder or a subfolder or it.
+To utilize this container you will need to point the xfitter data files (steering.txt, ewparam.txt, etc) to the containers `/run` directory and any target data files into the `/data`. This will become your base path and the target data must be in this folder or a subfolder or it.
 
 From within this folder you can run the follow:
 ```
-    docker run --rm -it -v $(pwd):/data jbrandons/xfitter
+    docker run --rm -it -v $(pwd):/run -v /host/data:/data jbrandons/xfitter
 ```
-This will result in the same output as running  `xfitter` and `xfitter-draw output/` from this folder, and all outputs will correctly be placed in the `output/` folder on the host machine.
+This will result in the same output as running  `xfitter` and `xfitter-draw output/` from the `/run` folder, and all outputs will correctly be placed in the `/run/output/` folder on the host machine.
 
 ## PDF files
 lhapdf will pull any needed pdf datasets automatically from its [repo](http://lhapdfsets.web.cern.ch/lhapdfsets/current/).
 You can speed up the run time of the container by providing pre-downloaded tarballs or by linking to an existing lhapdf data directory on the host machine.
+
 Binding the host's lhapdf data directory can be done by adding `-v $(lhapdf-config --datadir):/pdffiles` before the image name in the run
 PDF tarballs must end in either `.tar.gz` or `.tgz` and can be added by placing them all inside a directory and binding with `-v /host/pdffiles:/pdffiles`
 
 ```
-    docker run --rm -it -v /host/path/to/data:/data -v /host/pdffiles:/pdffiles jbrandons/xfitter
+    docker run --rm -it -v $(pwd):/run -v /host/data:/data -v $(lhapdf-config --datadir):/pdffiles jbrandons/xfitter
 ```
 
 ## Entering the container
@@ -40,7 +41,7 @@ This project has been tested on a mainframe with [singularity](https://sylabs.io
 
 To run in a folder with the xfitter data and files, as in the first example in Usage, use the following command
 ```
-    singularity run -B $(pwd):/data docker://jbrandons/xfitter
+    singularity run -B $(pwd):/run -B $(pwd)/../data:/data docker://jbrandons/xfitter
 ```
 
 # Included Software Versions
