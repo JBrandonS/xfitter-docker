@@ -4,7 +4,7 @@ set -e
 # Setup xfitter
 source ${XFITTER_INSTALL_DIR}/setup.sh
 
-# Fix issue with singularity not honoring WORDDIR in docker
+# Fix issue with singularity not honoring WORKDIR in docker
 cd /run
 
 # Allow people to add lhapdf data files

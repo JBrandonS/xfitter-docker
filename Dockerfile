@@ -8,7 +8,7 @@ WORKDIR $XFITTER_INSTALL_DIR
 RUN apt-get update -qq \
     && apt-get install -y -qq --no-install-recommends wget libyaml-dev libyaml-cpp-dev ghostscript \
     && apt-get install -y -qq --no-install-recommends fonts-liberation texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra \
-    && apt-get install -y -qq --no-install-recommends vi \
+    && apt-get install -y -qq --no-install-recommends vim \
     && rm -rf /packages /var/lib/apt/lists/*
 
 COPY install-xfitter-master install-xfitter
