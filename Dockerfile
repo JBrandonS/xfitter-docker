@@ -23,7 +23,7 @@ RUN chmod +x /docker-entrypoint.sh
 
 VOLUME [ "/run" ]
 VOLUME [ "/data" ]
-VOLUME [ "/pdffiles" ]
+VOLUME [ "/pdfdata" ]
 
 WORKDIR /run
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
