@@ -17,7 +17,7 @@ From within this folder you can run the follow:
 ```
     docker run -it -v $(pwd):/run -v /host/data:/data jbrandons/xfitter
 ```
-This will result in the same output as running  `xfitter` and `xfitter-draw output/` from the `/run` folder, and all outputs will correctly be placed in the `/run/output/` folder on the host machine.
+This will result in the same output as running  `xfitter` and `xfitter-draw output/` from the current working directory, and all outputs will correctly be placed in the `output/` folder on the host machine.
 
 ## PDF files
 LHAPDF will pull any needed pdf datasets automatically from its [repo](http://lhapdfsets.web.cern.ch/lhapdfsets/current/).
