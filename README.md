@@ -9,6 +9,7 @@ Prebuilt images for this project are available in docker-hub under [jbrandons/xf
 ```
     docker pull jbrandons/xfitter
 ```
+If you have not used Docker you may want to view the [Docker Quickstart guide](https://docs.docker.com/get-started/)
 
 # Usage
 To utilize this container you will need to point the xFitter data files (steering.txt, ewparam.txt, etc) to the container's `/run` directory and any target data files into `/data`. The steering file should also be modified to look in the `/data` folder.
@@ -29,7 +30,7 @@ Binding the host's LHAPDF data directory can be done by adding `-v $(lhapdf-conf
     docker run -it -v $(pwd):/run -v /host/data:/data -v $(lhapdf-config --datadir):/pdfdata jbrandons/xfitter
 ```
 
- You can download these files from [here](http://lhapdfsets.web.cern.ch/lhapdfsets/current/) and extract all of them into a single directory if you do not have LHAPDF installed on the host machine.
+ You can download the pdf datasets from [here](http://lhapdfsets.web.cern.ch/lhapdfsets/current/) and extract all of them into a single directory if you do not have LHAPDF installed on the host machine.
 
 ## Entering the container
 You may enter the container by appending an available shell after the container name, to launch `bash` run
