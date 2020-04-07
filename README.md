@@ -1,4 +1,3 @@
-
 # xFitter-Docker
 xFitter-Docker is a docker container featuring the latest version of [xFitter](https://www.xfitter.org/xFitter/), from the master branch for the [main repo](https://gitlab.cern.ch/fitters/xfitter), and as well as many standard HEP software packages needed for processing.
 
@@ -9,10 +8,10 @@ Prebuilt images for this project are available in docker-hub under [jbrandons/xf
 ```
     docker pull jbrandons/xfitter
 ```
-If you have not used Docker you may want to view the [Docker Quickstart guide](https://docs.docker.com/get-started/)
+If you have not used Docker you may want to view the [Docker Quickstart guide](https://docs.docker.com/get-started/).
 
 # Usage
-To utilize this container you will need to point the xFitter data files (steering.txt, ewparam.txt, etc) to the container's `/run` directory and any target data files into `/data`. The steering file should also be modified to look in the `/data` folder.
+To utilize this container you will need to point the host's xFitter data files (steering.txt, ewparam.txt, etc) to the container's `/run` directory and any target data files into `/data`. The steering file should also be modified to look in the `/data` folder. If your steering files are set to look in a local `datafiles` directory you can mount this by `-v /host/data:/run/datafiles` after you have mounted the `/run` direcotry.
 
 From within this folder you can run the follow:
 ```
@@ -21,16 +20,17 @@ From within this folder you can run the follow:
 This will result in the same output as running  `xfitter` and `xfitter-draw output/` from the current working directory, and all outputs will correctly be placed in the `output/` folder on the host machine.
 
 ## PDF files
-LHAPDF will pull any needed pdf datasets automatically from its [repo](http://lhapdfsets.web.cern.ch/lhapdfsets/current/).
-You can speed up the run time of the container by linking to an existing LHAPDF data directory on the host machine.
+Inorder to reduce the size of the container the only PDF dataset included is CT10. 
 
-Binding the host's LHAPDF data directory can be done by adding `-v $(lhapdf-config --datadir):/pdfdata` before the image name in the run
-
+The best method to provide other datasets is to bind the host's LHAPDF data directory files to the containters `/pdfdata` directory. This can be done by adding `-v $(lhapdf-config --datadir):/pdfdata` before the image name in the run command.
 ```
     docker run -it -v $(pwd):/run -v /host/data:/data -v $(lhapdf-config --datadir):/pdfdata jbrandons/xfitter
 ```
-
- You can download the pdf datasets from [here](http://lhapdfsets.web.cern.ch/lhapdfsets/current/) and extract all of them into a single directory if you do not have LHAPDF installed on the host machine.
+ You can download the pdf datasets from [here](http://lhapdfsets.web.cern.ch/lhapdfsets/current/) and extract all of them into a single directory if you do not have LHAPDF installed on the host machine. You will also need the `lhapdf.conf` and `pdfsets.index` files in this directory. 
+ 
+ If you enter the container you can use `lhapdf install` to download the datasets before running xFitter. If you plan on downloading the datasets and you have access to the CERN CVMFS you may want to mount it with `-v /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/`. As both of these methods require entering the containter and downloading the datasets before each run it is not recommended. 
+ 
+ As singularity runs containters in a read only format it is not possible to download these files from within the container without first mounting an existing `/pdfdata` directory. 
 
 ## Entering the container
 You may enter the container by appending an available shell after the container name, to launch `bash` run
@@ -67,4 +67,4 @@ If you enter the container using the `exec` or `shell` option, you will need to 
 |[apfelxx](https://github.com/vbertone/apfelxx/)|4.0.0|
 
 # Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
