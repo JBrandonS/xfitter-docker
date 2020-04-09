@@ -1,5 +1,5 @@
 # xFitter-Docker
-xFitter-Docker is a docker container featuring the latest version of [xFitter](https://www.xfitter.org/xFitter/), from the master branch for the [main repo](https://gitlab.cern.ch/fitters/xfitter), and as well as many standard HEP software packages needed for processing.
+xFitter-Docker is a unofficial docker container featuring the latest version of [xFitter](https://www.xfitter.org/xFitter/), from the master branch for the [main repo](https://gitlab.cern.ch/fitters/xfitter), and as well as many standard HEP software packages needed for processing.
 
 This allows for easy use of an up-to-date xFitter across all systems and configurations.
 
@@ -11,26 +11,30 @@ Prebuilt images for this project are available in docker-hub under [jbrandons/xf
 If you have not used Docker you may want to view the [Docker Quickstart guide](https://docs.docker.com/get-started/).
 
 # Usage
-To utilize this container you will need to point the host's xFitter data files (steering.txt, ewparam.txt, etc) to the container's `/run` directory and any target data files into `/data`. The steering file should also be modified to look in the `/data` folder. If your steering files are set to look in a local `datafiles` directory you can mount this by `-v /host/data:/run/datafiles` after you have mounted the `/run` direcotry.
+To utilize this container you will need to point the host's xFitter data files (steering.txt, etc) to the container's `/run` directory and any target data files into `/data`. 
 
-From within this folder you can run the follow:
+If no `/run/datafiles` directory exists the initialization script will create a symlink from `/data` to `/run/datafiles` to allow running of unmodified steering files. If your steering file is not setup to look for data in `datafiles` you will need to modify it.
+
+From within your xFitter data folder you can run the follow command:
 ```
     docker run -it -v $(pwd):/run -v /host/data:/data jbrandons/xfitter
 ```
 This will result in the same output as running  `xfitter` and `xfitter-draw output/` from the current working directory, and all outputs will correctly be placed in the `output/` folder on the host machine.
 
 ## PDF files
-Inorder to reduce the size of the container the only PDF dataset included is CT10. 
+In order to reduce the size of the container the only PDF dataset included is CT10. 
 
-The best method to provide other datasets is to bind the host's LHAPDF data directory files to the containters `/pdfdata` directory. This can be done by adding `-v $(lhapdf-config --datadir):/pdfdata` before the image name in the run command.
+The best method to provide other datasets is to bind the host's LHAPDF data directory files to the containers `/pdfdata` directory. This can be done by adding `-v $(lhapdf-config --datadir):/pdfdata` before the image name in the run command.
 ```
     docker run -it -v $(pwd):/run -v /host/data:/data -v $(lhapdf-config --datadir):/pdfdata jbrandons/xfitter
 ```
  You can download the pdf datasets from [here](http://lhapdfsets.web.cern.ch/lhapdfsets/current/) and extract all of them into a single directory if you do not have LHAPDF installed on the host machine. You will also need the `lhapdf.conf` and `pdfsets.index` files in this directory. 
  
- If you enter the container you can use `lhapdf install` to download the datasets before running xFitter. If you plan on downloading the datasets and you have access to the CERN CVMFS you may want to mount it with `-v /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/`. As both of these methods require entering the containter and downloading the datasets before each run it is not recommended. 
+ If you enter the container you can use `lhapdf install` to download the datasets before running xFitter. If you plan on downloading the datasets and you have access to the CERN CVMFS you may want to mount it with `-v /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/`. As both of these methods require entering the container and downloading the datasets before each run it is not recommended. 
  
- As singularity runs containters in a read only format it is not possible to download these files from within the container without first mounting an existing `/pdfdata` directory. 
+ As singularity runs containers in a read only format it is not possible to download these files from within the container without first mounting an existing `/pdfdata` directory. If you do not have an existing directory on the host machine you may bootstrap one with the following:
+Mount the desired directory to `/pdffiles`, enter the container, and run `cp -r $(lhapdf-config --datadir) /pdfdata && export LHAPDF_DATA_PATH=/pdfdata`. You will only need to do this once.
+ 
 
 ## Entering the container
 You may enter the container by appending an available shell after the container name, to launch `bash` run
