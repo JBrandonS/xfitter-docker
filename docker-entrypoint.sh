@@ -20,15 +20,22 @@ if [ -d /pdfdata ] && [ "$(ls /pdfdata)" ]; then
 fi
 
 # Add a symlink to the /data directory to prevent the need of modifying steering files
+createdSymlink=0
 if [ -d /data ] && [ "$(ls /data)" ] && [ ! -d /run/datafiles ]; then
-    echo "Linking /data to /run/datafiles"
-    ln -s /data /run/datafiles
+    echo "Linking /data to /run/datafiles."
+    ln -s /data /run/datafiles && createdSymlink=1
 fi
 
+# If the first argument is xfitter (the default) we run xfitter and xffiter-draw
+# Otherwise we just run the commands provided
 if [ "$1" = 'xfitter' ]; then
-    exec xfitter "$@"
-    exec xfitter-draw output/
+    xfitter
+    xfitter-draw output/
+else
+    "$@"
 fi
 
-# If the first arg is not xfitter we just run that
-exec "$@"
+# Clean up symlink if we made one
+if [[ createdSymlink -eq 1 ]]; then
+    unlink /run/datafiles
+fi
