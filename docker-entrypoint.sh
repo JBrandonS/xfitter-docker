@@ -26,7 +26,7 @@ if [ -d /data ] && [ "$(ls /data)" ] && [ ! -d /run/datafiles ]; then
     ln -s /data /run/datafiles && createdSymlink=1
 fi
 
-# If the first argument is xfitter (the default) we run xfitter and xffiter-draw
+# If the first argument is xfitter (the default) we run xfitter and xfitter-draw
 # Otherwise we just run the commands provided
 if [ "$1" = 'xfitter' ]; then
     xfitter
