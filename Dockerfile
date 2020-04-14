@@ -6,7 +6,7 @@ ENV XFITTER_INSTALL_DIR /opt/xfitter
 WORKDIR $XFITTER_INSTALL_DIR
 
 RUN apt-get update -qq \
-    && apt-get install -y --no-install-recommends wget libyaml-dev libyaml-cpp-dev ghostscript fonts-liberation texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra vim-tiny \
+    && apt-get install -y --no-install-recommends wget libyaml-dev libyaml-cpp-dev ghostscript fonts-liberation texlive-latex-base texlive-fonts-recommended texlive-latex-extra vim-tiny \
     && rm -rf /packages /var/lib/apt/lists/*
 
 COPY install-xfitter-master install-xfitter
