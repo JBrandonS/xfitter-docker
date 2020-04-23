@@ -12,9 +12,12 @@ RUN apt-get update -qq \
 COPY install-xfitter-master install-xfitter
 RUN chmod +x install-xfitter \
     && ./install-xfitter master \
-    && rm -rf ${XFITTER_INSTALL_DIR}/xfitter-master/.git ${XFITTER_INSTALL_DIR}/xfitter-master/examples \
+    && rm -rf ${XFITTER_INSTALL_DIR}/xfitter-master/.git ${XFITTER_INSTALL_DIR}/xfitter-master/examples ${XFITTER_INSTALL_DIR}/xfitter-master/doc/ \
     && rm -f ${XFITTER_INSTALL_DIR}/deps/*.tar.gz ${XFITTER_INSTALL_DIR}/deps/*.tgz \
-    && chmod -R 755 ${XFITTER_INSTALL_DIR}
+    && rm -rf ${XFITTER_INSTALL_DIR}/deps/lhapdf/share/LHAPDF/CT10 \
+    && rm -rf ${XFITTER_INSTALL_DIR}/deps/*/doc*/ \
+    && chmod -R 755 ${XFITTER_INSTALL_DIR} \
+    && ln -s /usr/bin/vim.tiny /usr/bin/vim
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
@@ -25,4 +28,4 @@ VOLUME [ "/pdfdata" ]
 
 WORKDIR /run
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD [ "xfitter" ]
+CMD [ "xfitter", "&&", "xfitter-draw", "output" ]

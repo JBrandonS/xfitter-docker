@@ -8,8 +8,8 @@ source ${XFITTER_INSTALL_DIR}/setup.sh
 if [ -d /run ]; then cd /run; fi
 
 # Allow people to add LHAPDF data files
-if [ -d /pdfdata ] && [ "$(ls /pdfdata)" ]; then
-    if [ -f /pdfdata/lhapdf.conf ] && [ -f /pdfdata/pdfsets.index ]; then
+if [[ -d /pdfdata ]]; then
+    if [[ -f /pdfdata/lhapdf.conf && -f /pdfdata/pdfsets.index ]]; then
         echo "Found LHAPDF data in /pdfdata, telling LHAPDF to use this directory."
         echo "Note: lhapdf-config --datadir will not be updated to this path. Don't panic."
         export LHAPDF_DATA_PATH=/pdfdata
@@ -21,18 +21,19 @@ fi
 
 # Add a symlink to the /data directory to prevent the need of modifying steering files
 createdSymlink=0
-if [ -d /data ] && [ "$(ls /data)" ] && [ ! -d /run/datafiles ]; then
+if [[ -d /data && ! -d /run/datafiles ]]; then
     echo "Linking /data to /run/datafiles."
     ln -s /data /run/datafiles && createdSymlink=1
 fi
 
-# If the first argument is xfitter (the default) we run xfitter and xfitter-draw
-# Otherwise we just run the commands provided
-if [ "$1" = 'xfitter' ]; then
+# if the first argument starts with - we assume it is a xfitter-draw argument
+if [[ $* == -* ]]; then
     xfitter
-    xfitter-draw output/
+    xfitter-draw "$@"
 else
-    "$@"
+    # Otherwise we run the command given
+    # Note: the default command is 'xfitter && xfitter-draw output' from the dockerfile 
+    eval $@
 fi
 
 # Clean up symlink if we made one
