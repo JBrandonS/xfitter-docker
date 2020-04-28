@@ -11,7 +11,7 @@ RUN apt-get update -qq \
 
 COPY install-xfitter-master install-xfitter
 RUN chmod +x install-xfitter \
-    && ./install-xfitter master \
+    && ./install-xfitter 2.0.1 \
     && rm -rf ${XFITTER_INSTALL_DIR}/xfitter-master/.git ${XFITTER_INSTALL_DIR}/xfitter-master/examples ${XFITTER_INSTALL_DIR}/xfitter-master/doc/ \
     && rm -f ${XFITTER_INSTALL_DIR}/deps/*.tar.gz ${XFITTER_INSTALL_DIR}/deps/*.tgz \
     && rm -rf ${XFITTER_INSTALL_DIR}/deps/lhapdf/share/LHAPDF/CT10 \
