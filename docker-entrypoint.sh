@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
 
-# Setup xFitter
-source ${XFITTER_INSTALL_DIR}/setup.sh
-
 # Fix issue with singularity not honoring WORKDIR in docker
 if [ -d /run ]; then cd /run; fi
+
+# Setup xFitter
+pushd ${XFITTER_INSTALL_DIR}
+source setup.sh
+popd
 
 # Allow people to add LHAPDF data files
 if [[ -d /pdfdata ]]; then
