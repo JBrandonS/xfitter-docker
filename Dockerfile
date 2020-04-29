@@ -10,7 +10,7 @@ RUN apt-get update -qq \
     && apt-get install -y --no-install-recommends wget libyaml-dev libyaml-cpp-dev ghostscript fonts-liberation texlive-latex-base texlive-fonts-recommended texlive-latex-extra vim-tiny \
     && rm -rf /packages /var/lib/apt/lists/*
 
-RUN git clone https://gitlab.cern.ch/fitters/xfitter.git \
+RUN git clone --depth 1 https://gitlab.cern.ch/fitters/xfitter.git \
     && cp xfitter/tools/install-xfitter . \
     && rm -rf xfitter \
     && chmod +x install-xfitter \
