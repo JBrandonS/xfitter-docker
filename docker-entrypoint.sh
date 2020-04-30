@@ -4,10 +4,8 @@ set -e
 # Fix issue with singularity not honoring WORKDIR in docker
 if [ -d /run ]; then cd /run; fi
 
-# Setup xFitter, yes, you have to be in the install directory
-pushd ${XFITTER_INSTALL_DIR}
-source setup.sh
-popd
+# Setup xFitter
+source ${XFITTER_INSTALL_DIR}/setup.sh
 
 # Allow people to add LHAPDF data files
 if [[ -d /pdfdata ]]; then

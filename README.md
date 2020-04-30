@@ -106,7 +106,7 @@ If you enter the container using the `exec` or `shell` option, you will need to 
 |[qcdnum](https://www.nikhef.nl/~h24/qcdnum/)|17-01-14|
 |[apfel](https://apfel.hepforge.org/)|3.0.4|
 |[mela](https://apfel.hepforge.org/mela.html)|2.0.1|
-|[apfelgrid](https://github.com/zenaiev/APFELgrid)|1.0.1|
+|[apfelgrid](https://github.com/zenaiev/APFELgrid)|1.0.5|
 |[apfelxx](https://github.com/vbertone/apfelxx/)|4.0.0|
 
 # Contributing
