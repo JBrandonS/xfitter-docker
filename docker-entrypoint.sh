@@ -5,9 +5,7 @@ set -e
 if [ -d /run ]; then cd /run; fi
 
 # Setup xFitter
-pushd ${XFITTER_INSTALL_DIR}
-source setup.sh
-popd
+source ${XFITTER_INSTALL_DIR}/setup.sh
 
 # Allow people to add LHAPDF data files
 if [[ -d /pdfdata ]]; then
