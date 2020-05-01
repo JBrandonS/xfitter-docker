@@ -12,7 +12,7 @@ RUN apt-get update -qq \
 
 RUN wget https://raw.githubusercontent.com/JBrandonS/install-xfitter/master/install-xfitter \
     && chmod +x install-xfitter \
-    && ./install-xfitter ${XFITTER_VERSION} \
+    && ./install-xfitter ${XFITTER_VERSION} || cat install.log \
     && chmod -R 755 ${XFITTER_INSTALL_DIR} \
     && ln -s /usr/bin/vim.tiny /usr/bin/vim \
     && rm -rf install-xfitter install.log run deps/lhapdf/share/LHAPDF/NNPDF30_nlo_as_0118
