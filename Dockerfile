@@ -20,8 +20,8 @@ RUN wget https://raw.githubusercontent.com/JBrandonS/install-xfitter/master/inst
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
-# Fix a stupid bug with root not finding appl_Grid headers
-RUN cp /opt/xfitter/deps/applgrid/include/appl_grid/* /usr/local/include/root/
+# Fix issue with our version of root not finding the applgrid headers
+RUN cp -r /opt/xfitter/deps/applgrid/include/* /usr/local/include/root/
 
 VOLUME [ "/run" ]
 VOLUME [ "/data" ]
