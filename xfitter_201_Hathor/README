@@ -1,0 +1,15 @@
+This package includes a modified install script for xfitter with HATHOR 
+and a selection of common PDF sets.
+
+USAGE:
+
+Make sure the script is executable on your machine and run it:
+    chmod +x install-xfitter
+    ./install-xfitter 2.0.1
+
+To run a fixed-PDF study (LHAPDF analysis), you can do for example:
+    source setup.sh
+    cd run/LHAPDF_analysis_run
+    xfitter
+    xfitter-draw --bands --q2all output
+Also check out xfitter-draw --help to see what other plot options you have.

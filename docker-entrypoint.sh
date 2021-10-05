@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 # Fix issue with singularity not honoring WORKDIR in docker
 if [ -d /run ]; then cd /run; fi
@@ -7,17 +7,7 @@ if [ -d /run ]; then cd /run; fi
 # Setup xFitter
 source ${XFITTER_INSTALL_DIR}/setup.sh
 
-# Allow people to add LHAPDF data files
-if [[ -d /pdfdata ]]; then
-    if [[ -f /pdfdata/lhapdf.conf && -f /pdfdata/pdfsets.index ]]; then
-        echo "Found LHAPDF data in /pdfdata, telling LHAPDF to use this directory."
-        echo "Note: lhapdf-config --datadir will not be updated to this path. Don't panic."
-        export LHAPDF_DATA_PATH=/pdfdata
-    else
-        echo "Invalid PDF folder found at /pdfdata. Please check your bindings."
-        sleep 3
-    fi
-fi
+export LHAPDF_DATA_PATH=/pdfdata
 
 # Add a symlink to the /data directory to prevent the need of modifying steering files
 createdSymlink=0
